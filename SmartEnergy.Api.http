@@ -1,0 +1,144 @@
+@baseUrl = http://localhost:5000
+@accessToken = replace-with-access-token
+@homeId = 00000000-0000-0000-0000-000000000000
+@spaceId = 00000000-0000-0000-0000-000000000000
+@deviceId = 00000000-0000-0000-0000-000000000000
+@from = 2026-08-19T00:00:00Z
+@to = 2026-08-20T00:00:00Z
+
+### Create home
+POST {{baseUrl}}/api/homes
+Authorization: Bearer {{accessToken}}
+Content-Type: application/json
+
+{
+  "name": "My Home"
+}
+
+### List accessible homes
+GET {{baseUrl}}/api/homes
+Authorization: Bearer {{accessToken}}
+
+### Get home
+GET {{baseUrl}}/api/homes/{{homeId}}
+Authorization: Bearer {{accessToken}}
+
+### Update home
+PUT {{baseUrl}}/api/homes/{{homeId}}
+Authorization: Bearer {{accessToken}}
+Content-Type: application/json
+
+{
+  "name": "New Home Name"
+}
+
+### Create space
+POST {{baseUrl}}/api/homes/{{homeId}}/spaces
+Authorization: Bearer {{accessToken}}
+Content-Type: application/json
+
+{
+  "name": "Kitchen"
+}
+
+### List spaces
+GET {{baseUrl}}/api/homes/{{homeId}}/spaces
+Authorization: Bearer {{accessToken}}
+
+### Get space
+GET {{baseUrl}}/api/homes/{{homeId}}/spaces/{{spaceId}}
+Authorization: Bearer {{accessToken}}
+
+### Update space
+PUT {{baseUrl}}/api/homes/{{homeId}}/spaces/{{spaceId}}
+Authorization: Bearer {{accessToken}}
+Content-Type: application/json
+
+{
+  "name": "Main Kitchen"
+}
+
+### Create energy tariff
+POST {{baseUrl}}/api/homes/{{homeId}}/energy-tariffs
+Authorization: Bearer {{accessToken}}
+Content-Type: application/json
+
+{
+  "pricePerKWh": 102.50,
+  "currency": "CRC",
+  "effectiveFrom": "2026-08-01T00:00:00Z"
+}
+
+### List energy tariff history
+GET {{baseUrl}}/api/homes/{{homeId}}/energy-tariffs
+Authorization: Bearer {{accessToken}}
+
+### Get current energy tariff
+GET {{baseUrl}}/api/homes/{{homeId}}/energy-tariffs/current
+Authorization: Bearer {{accessToken}}
+
+### Register or resolve device
+POST {{baseUrl}}/api/homes/{{homeId}}/spaces/{{spaceId}}/devices
+Authorization: Bearer {{accessToken}}
+Content-Type: application/json
+
+{
+  "serialNumber": "SE-ESP32-000001",
+  "name": "Kitchen Plug"
+}
+
+### List devices
+GET {{baseUrl}}/api/homes/{{homeId}}/spaces/{{spaceId}}/devices
+Authorization: Bearer {{accessToken}}
+
+### Get device
+GET {{baseUrl}}/api/homes/{{homeId}}/spaces/{{spaceId}}/devices/{{deviceId}}
+Authorization: Bearer {{accessToken}}
+
+### Update device
+PUT {{baseUrl}}/api/homes/{{homeId}}/spaces/{{spaceId}}/devices/{{deviceId}}
+Authorization: Bearer {{accessToken}}
+Content-Type: application/json
+
+{
+  "name": "Refrigerator",
+  "isActive": true
+}
+
+### Create energy reading
+POST {{baseUrl}}/api/homes/{{homeId}}/spaces/{{spaceId}}/energy-readings
+Authorization: Bearer {{accessToken}}
+Content-Type: application/json
+
+{
+  "serialNumber": "SE-ESP32-000001",
+  "voltage": 120.4,
+  "current": 1.82,
+  "power": 219.1,
+  "energyTotalKwh": 4.7284,
+  "recordedAt": "2026-08-19T21:15:00Z"
+}
+
+### List energy readings by space
+GET {{baseUrl}}/api/homes/{{homeId}}/spaces/{{spaceId}}/energy-readings?from=2026-08-19T00:00:00Z&to=2026-08-20T00:00:00Z&page=1&pageSize=100
+Authorization: Bearer {{accessToken}}
+
+### List energy readings by device
+GET {{baseUrl}}/api/homes/{{homeId}}/spaces/{{spaceId}}/devices/{{deviceId}}/energy-readings?from=2026-08-19T00:00:00Z&to=2026-08-20T00:00:00Z&page=1&pageSize=100
+Authorization: Bearer {{accessToken}}
+
+### Get latest energy reading by device
+GET {{baseUrl}}/api/homes/{{homeId}}/spaces/{{spaceId}}/devices/{{deviceId}}/energy-readings/latest
+Authorization: Bearer {{accessToken}}
+
+### Get home consumption
+GET {{baseUrl}}/api/homes/{{homeId}}/consumption?from={{from}}&to={{to}}
+Authorization: Bearer {{accessToken}}
+
+### Get space consumption
+GET {{baseUrl}}/api/homes/{{homeId}}/spaces/{{spaceId}}/consumption?from={{from}}&to={{to}}
+Authorization: Bearer {{accessToken}}
+
+### Get device consumption
+GET {{baseUrl}}/api/homes/{{homeId}}/spaces/{{spaceId}}/devices/{{deviceId}}/consumption?from={{from}}&to={{to}}
+Authorization: Bearer {{accessToken}}
