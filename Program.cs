@@ -16,11 +16,41 @@ using SmartEnergy.Api.Infrastructure.Persistence;
 
 var builder = WebApplication.CreateBuilder(args);
 
+var portValue = builder.Configuration["PORT"];
+if (!string.IsNullOrWhiteSpace(portValue))
+{
+    if (!int.TryParse(portValue, out var port) || port is < 1 or > 65535)
+    {
+        throw new InvalidOperationException("PORT must be a number between 1 and 65535.");
+    }
+
+    builder.WebHost.UseUrls($"http://0.0.0.0:{port}");
+}
+
 // Add services to the container.
 
 builder.Services.AddControllers();
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
+builder.Services.AddHealthChecks();
+
+const string corsPolicyName = "ConfiguredOrigins";
+var allowedOrigins = builder.Configuration["Cors:AllowedOrigins"]?
+    .Split([',', ';'], StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries)
+    ?? [];
+
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy(corsPolicyName, policy =>
+    {
+        if (allowedOrigins.Length > 0)
+        {
+            policy.WithOrigins(allowedOrigins)
+                .AllowAnyHeader()
+                .AllowAnyMethod();
+        }
+    });
+});
 
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection")
     ?? throw new InvalidOperationException(
@@ -110,9 +140,11 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+app.UseCors(corsPolicyName);
 app.UseAuthentication();
 app.UseAuthorization();
 
+app.MapHealthChecks("/health");
 app.MapControllers();
 
 app.Run();

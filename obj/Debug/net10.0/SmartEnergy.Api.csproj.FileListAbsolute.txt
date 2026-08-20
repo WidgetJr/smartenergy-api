@@ -186,3 +186,4 @@ C:\projects\smartenergy-api\bin\Debug\net10.0\Microsoft.IdentityModel.Protocols.
 C:\projects\smartenergy-api\bin\Debug\net10.0\Microsoft.IdentityModel.Protocols.OpenIdConnect.dll
 C:\projects\smartenergy-api\bin\Debug\net10.0\Microsoft.IdentityModel.Tokens.dll
 C:\projects\smartenergy-api\bin\Debug\net10.0\System.IdentityModel.Tokens.Jwt.dll
+C:\projects\smartenergy-api\obj\Debug\net10.0\SmartEnergy.Api.sourcelink.json
